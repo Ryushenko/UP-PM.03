@@ -170,17 +170,18 @@ namespace WindowsFormsApp1
 
         private void buttonFindYoungest_Click_1(object sender, EventArgs e)
         {
-            string query = "SELECT FullName FROM Owners WHERE Address LIKE '%Киевский%' ORDER BY RegistrationDate DESC LIMIT 1;";
+            string query = "SELECT FullName FROM Owners WHERE Address LIKE '%Киевский%' ORDER BY YEAR ASC LIMIT 1;";
             dataGridViewResults.DataSource = dbHelper.ExecuteQuery(query);
         }
 
         private void buttonFindHighInvestment_Click_1(object sender, EventArgs e)
         {
-            string query = @"SELECT s.StoreID, s.Name FROM Stores s
-                         JOIN OwnerStores os ON s.StoreID = os.StoreID
-                         JOIN Owners o ON os.OwnerID = o.OwnerID
-                         WHERE o.Address NOT LIKE '%Киевский%'
-                         AND s.CharterCapital * 0.5 < o.Investment;";
+            string query = @"SELECT s.StoreID, s.Name, o.FullName, o.Investment 
+                                FROM Stores s
+                            JOIN OwnerStores os ON s.StoreID = os.StoreID
+                            JOIN Owners o ON os.OwnerID = o.OwnerID
+                            WHERE o.Address NOT LIKE '%Киевский%'
+                            AND s.CharterCapital * 0.5 < o.Investment;";
             dataGridViewResults.DataSource = dbHelper.ExecuteQuery(query);
         }
     }
